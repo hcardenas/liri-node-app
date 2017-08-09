@@ -2,7 +2,9 @@
 // -- added moment to get the time stamp on the log.txt
 // -- do-what-it says can handle multiple commands
 //    however be carefull with the new line at the end of the file 
-//    or it wont run.
+//    or it wont run. 
+// -- do-what-it says ignores do-what-it says from the file in order to 
+//    avoid an infinite loop
 // ************************
 
 var keys = require("./keys.js");

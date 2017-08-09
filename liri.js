@@ -10,19 +10,18 @@ var Spotify = require('node-spotify-api');
 var request = require('request');
 var moment = require('moment');
 var fs = require('fs');
+var Twitter = require('twitter');
 
-// console.log(keys);
 
-//console.log(keys);
+
 var parameters = process.argv;
 
 
-if (parameters.length > 2  && parameters.length < 5){
+if (parameters.length > 2  && parameters.length < 5)
 	main(parameters[2].toLowerCase(), parameters[3]);
-}
-else {	
+else 	
 	END();
-}
+
 
 
 function main(action, arg) {
@@ -50,7 +49,27 @@ function tweet_func(arg) {
 		return;
 	}
 
-	console.log("something here");
+ 
+	var params = {screen_name: 'helmut cardenas'};
+	keys.twitterKeys.get('statuses/user_timeline', params, function(error, tweets, response) {
+	  if (!error) {
+	    //console.log(tweets);
+
+	    var message = "";
+	    var num = 1;
+	    for (var i = 0; i < tweets.length ; ++i, ++num) {
+	    	message += `tweet ${num}: ${tweets[i].text}`;
+	    	if (i < tweets.length - 1) 
+	    		message += '\n';
+	    	
+	    }
+	    
+	    LOG(message, "my-tweets");
+	  }
+	});
+
+
+
 }
 
 function doWhatItSays_func(arg) {
@@ -59,20 +78,18 @@ function doWhatItSays_func(arg) {
 	var file = fs.readFileSync("./random.txt" , "utf8", (err)=> {});
 	var fileArr = file.split('\n');
 
-
 	var action = "";
 
 
 	for (var i in fileArr) {
 		action = fileArr[i].split(",");
-		main(action[0], action[1]);
+		if (action[0] !== "do-what-it-says")  // avoids infinite loop
+			main(action[0], action[1]);
 	}
-
 }
 
 function movie_func(arg) {
 	var movieName = arg === undefined ? "Mr. Nobody" : arg;
-
 	request(`http://www.omdbapi.com/?apikey=${keys.movie}&t=${movieName}&r=json`, function(error, response, body) {
 
 	  if (!error && response.statusCode === 200) {
@@ -85,7 +102,6 @@ function movie_func(arg) {
 	  	`\nCountry Produced: ${jsonObj.Country}\nLanguage: ${jsonObj.Language}\nPlot: ${jsonObj.Plot}\nActors: ${jsonObj.Actors}`;
 	    LOG(movieDetails, "movie-this");
 	  }
-
 	});
 }
 
@@ -95,7 +111,7 @@ function spotify_func(arg) {
 
 	keys.spotify
 	  .search({ type: 'track', query: song , limit: 1})
-	  .then(function(response) {
+	  .then((response) => {
 
 	    var artistsArr = response.tracks.items[0].artists;
 	    var artist = "";
@@ -128,6 +144,7 @@ function LOG(msg , cmd) {
 }
 
 function usage() {
+
 	var use = 
 `the possible commands are:
 

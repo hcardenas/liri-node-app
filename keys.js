@@ -1,11 +1,11 @@
 
-
-exports.twitterKeys = {
+var Twitter = require('twitter');
+exports.twitterKeys = new Twitter ({
   consumer_key: 'RpyL0K2fgbYxSeS1FnLgBfqQz',
   consumer_secret: 'Yahrti4hOyl5vzfu9EFkd3bb1lFEVMsLv1xPyUxWOnFn9wz4Tn',
   access_token_key: '893854715775250432-xWxXq6M6lf76hAeU58if9vhcTj8Y0wd',
   access_token_secret: 'EjDVvuKvTWHj6S91kix3usvpnZSiujcvDEUIYWtJr0rQ6',
-}
+});
 
 var Spotify = require('node-spotify-api');
 exports.spotify = new Spotify({

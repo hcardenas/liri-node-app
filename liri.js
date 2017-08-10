@@ -116,7 +116,7 @@ function spotify_func(arg) {
 	    var artistsArr = response.tracks.items[0].artists;
 	    var artist = "";
 	    for (var i in artistsArr) {
-	    	artist += `artistsArr[i] `;
+	    	artist += `${artistsArr[i]} `;
 	    }
 	    var preview = response.tracks.items[0].external_urls.spotify;
 	    var albumName = response.tracks.items[0].album.name;

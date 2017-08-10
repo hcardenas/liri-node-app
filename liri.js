@@ -11,8 +11,10 @@ var request = require('request');
 var moment = require('moment');
 var fs = require('fs');
 var Twitter = require('twitter');
+var readline = require('readline');
 
 
+var loop_used = true;
 
 var parameters = process.argv;
 
@@ -38,9 +40,41 @@ function main(action, arg) {
 		case "do-what-it-says" :
 			doWhatItSays_func(arg);
 			break;
+
+		case "--loop":
+			loop();
+			break;
 		default :
 			END();
 	}
+}
+
+function loop() {
+	var rl ;
+	if (loop_used) {
+		loop_used = false;
+		var rl = readline.createInterface({
+		  input: process.stdin,
+		  output: process.stdout
+		});
+	}
+
+	rl.question('What do you think of Node.js? ', (answer) => {
+	  // TODO: Log the answer in a database
+	  console.log(answer);
+
+	  if (answer === "quit"){
+	  	rl.close();
+	  	process.exit();
+	  }
+	  rl.close();
+	  var input = answer.split(" ");
+	  main(input[0], input[1]);
+	  loop();
+
+	  
+	});
+	
 }
 
 function tweet_func(arg) {
@@ -116,7 +150,7 @@ function spotify_func(arg) {
 	    var artistsArr = response.tracks.items[0].artists;
 	    var artist = "";
 	    for (var i in artistsArr) {
-	    	artist += `artistsArr[i] `;
+	    	artist += `${artistsArr[i]} `;
 	    }
 	    var preview = response.tracks.items[0].external_urls.spotify;
 	    var albumName = response.tracks.items[0].album.name;
@@ -131,6 +165,10 @@ function spotify_func(arg) {
 	    console.log(err);
 	  });
 }
+
+
+
+
 
 
 function LOG(msg , cmd) {

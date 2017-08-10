@@ -208,7 +208,9 @@ function usage() {
 	 the movie 'Mr. Nobody.
 
 * 'do-what-it-says' - It should run spotify-this-song for "I Want it That Way," 
-   as follows the text in random.txt.` ;
+   as follows the text in random.txt.
+
+* '--loop' - makes the program go in a loop and it will go on untill 'quit' is used` ;
 
   console.log(use);
 }

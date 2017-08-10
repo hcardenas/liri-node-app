@@ -11,8 +11,10 @@ var request = require('request');
 var moment = require('moment');
 var fs = require('fs');
 var Twitter = require('twitter');
+var readline = require('readline');
 
 
+var loop_used = false;
 
 var parameters = process.argv;
 
@@ -38,9 +40,39 @@ function main(action, arg) {
 		case "do-what-it-says" :
 			doWhatItSays_func(arg);
 			break;
+
+		case "--loop":
+			loop_used = true;
+			loop();
+			break;
 		default :
 			END();
 	}
+}
+
+function loop() {
+	
+	var rl = readline.createInterface({
+	  input: process.stdin,
+	  output: process.stdout
+	});
+	
+
+	rl.question('> ', (answer) => {
+	  // TODO: Log the answer in a database
+	  
+
+	  if (answer === "quit"){
+	  	rl.close();
+	  	process.exit();
+	  }
+
+	  rl.close();
+	  var input = answer.split(" ");
+	  main(input[0], input[1]);
+  
+	});
+	
 }
 
 function tweet_func(arg) {
@@ -132,7 +164,6 @@ function spotify_func(arg) {
 	  });
 }
 
-
 function LOG(msg , cmd) {
 
 	var fs = require("fs");
@@ -141,6 +172,10 @@ function LOG(msg , cmd) {
 
 	console.log(msg);
 	fs.appendFile("log.txt", message, "utf8", (err) => { if (err) throw err; });
+	
+	if (loop_used) {
+		loop();
+	}
 }
 
 function usage() {
@@ -173,12 +208,17 @@ function usage() {
 	 the movie 'Mr. Nobody.
 
 * 'do-what-it-says' - It should run spotify-this-song for "I Want it That Way," 
-   as follows the text in random.txt.` ;
+   as follows the text in random.txt.
+
+* '--loop' - makes the program go in a loop and it will go on untill 'quit' is used` ;
 
   console.log(use);
 }
 
 function END() {
 	usage();
-	process.exit();
+	if (!loop_used)
+		process.exit(); 
+	else 
+		loop();
 }

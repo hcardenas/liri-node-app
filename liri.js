@@ -139,7 +139,7 @@ function LOG(msg , cmd) {
 
 	var fs = require("fs");
 	var timeStamp  = moment().format();
-	var message = `(${timeStamp}) - ${cmd}:\n${msg}\n/*************\n\n`;	
+	var message = `(/*************\n${timeStamp}) - ${cmd}:\n${msg}\n/*************\n\n`;	
 
 	console.log(msg);
 	fs.appendFile("log.txt", message, "utf8", (err) => { if (err) throw err; });

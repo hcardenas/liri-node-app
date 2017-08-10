@@ -3,8 +3,6 @@
 // -- do-what-it says can handle multiple commands
 //    however be carefull with the new line at the end of the file 
 //    or it wont run. 
-// -- do-what-it says ignores do-what-it says from the file in order to 
-//    avoid an infinite loop
 // ************************
 
 var keys = require("./keys.js");
@@ -139,7 +137,7 @@ function LOG(msg , cmd) {
 
 	var fs = require("fs");
 	var timeStamp  = moment().format();
-	var message = `(/*************\n${timeStamp}) - ${cmd}:\n${msg}\n/*************\n\n`;	
+	var message = `/*************\n${timeStamp}) - ${cmd}:\n${msg}\n/*************\n\n`;	
 
 	console.log(msg);
 	fs.appendFile("log.txt", message, "utf8", (err) => { if (err) throw err; });

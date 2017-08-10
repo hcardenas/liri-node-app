@@ -14,7 +14,7 @@ var Twitter = require('twitter');
 var readline = require('readline');
 
 
-var loop_used = true;
+var loop_used = false;
 
 var parameters = process.argv;
 
@@ -42,6 +42,7 @@ function main(action, arg) {
 			break;
 
 		case "--loop":
+			loop_used = true;
 			loop();
 			break;
 		default :
@@ -50,29 +51,26 @@ function main(action, arg) {
 }
 
 function loop() {
-	var rl ;
-	if (loop_used) {
-		loop_used = false;
-		var rl = readline.createInterface({
-		  input: process.stdin,
-		  output: process.stdout
-		});
-	}
+	
+	var rl = readline.createInterface({
+	  input: process.stdin,
+	  output: process.stdout
+	});
+	
 
-	rl.question('What do you think of Node.js? ', (answer) => {
+	rl.question('> ', (answer) => {
 	  // TODO: Log the answer in a database
-	  console.log(answer);
+	  
 
 	  if (answer === "quit"){
 	  	rl.close();
 	  	process.exit();
 	  }
+
 	  rl.close();
 	  var input = answer.split(" ");
 	  main(input[0], input[1]);
-	  loop();
-
-	  
+  
 	});
 	
 }
@@ -166,11 +164,6 @@ function spotify_func(arg) {
 	  });
 }
 
-
-
-
-
-
 function LOG(msg , cmd) {
 
 	var fs = require("fs");
@@ -179,6 +172,10 @@ function LOG(msg , cmd) {
 
 	console.log(msg);
 	fs.appendFile("log.txt", message, "utf8", (err) => { if (err) throw err; });
+	
+	if (loop_used) {
+		loop();
+	}
 }
 
 function usage() {
@@ -218,5 +215,8 @@ function usage() {
 
 function END() {
 	usage();
-	process.exit();
+	if (!loop_used)
+		process.exit(); 
+	else 
+		loop();
 }

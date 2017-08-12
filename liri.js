@@ -139,7 +139,7 @@ function movie_func(arg) {
 
 function spotify_func(arg) {
 
-	var song = arg === undefined ? "The Sign" : arg ; 
+	var song = arg === undefined ? "The Sign, ace of base" : arg ; 
 
 	keys.spotify
 	  .search({ type: 'track', query: song , limit: 1})
@@ -147,15 +147,15 @@ function spotify_func(arg) {
 
 	    var artistsArr = response.tracks.items[0].artists;
 	    var artist = "";
-	    for (var i in artistsArr) {
-	    	artist += `${artistsArr[i]} `;
-	    }
+	    for (var i in artistsArr) 
+	    	artist += `${artistsArr[i].name} `;
+	    
 	    var preview = response.tracks.items[0].external_urls.spotify;
 	    var albumName = response.tracks.items[0].album.name;
-	    var sonName = response.tracks.items[0].name;
+	    var songName = response.tracks.items[0].name;
 
 	    var songDetails = 
-	    `Artist(s): ${artist}\nThe song's name: ${sonName}\nPreview: ${preview}\nAlbum: ${albumName}`;
+	    `Artist(s): ${artist}\nThe song's name: ${songName}\nPreview: ${preview}\nAlbum: ${albumName}`;
 
 	    LOG(songDetails, "spotify-this-song");
 	  })

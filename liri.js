@@ -12,6 +12,7 @@ var moment = require('moment');
 var fs = require('fs');
 var Twitter = require('twitter');
 var readline = require('readline');
+var inquirer = require('inquirer');
 
 
 var loop_used = false;
@@ -50,27 +51,42 @@ function main(action, arg) {
 	}
 }
 
-function loop() {
-	
-	var rl = readline.createInterface({
-	  input: process.stdin,
-	  output: process.stdout
-	});
-	
+function loop() {	
 
-	rl.question('> ', (answer) => {
-	  // TODO: Log the answer in a database
-	  
-
-	  if (answer === "quit"){
-	  	rl.close();
-	  	process.exit();
-	  }
-
-	  rl.close();
-	  var input = answer.split(" ");
-	  main(input[0], input[1]);
-  
+	inquirer.prompt([
+		{ 
+			type: "list",
+			name: "option",
+			choices: ["my-tweets", "movie-this","spotify-this-song","do-what-it-says", "quit"],
+			message: ">pick one: "
+		}, 
+		{
+			when: function(answer) {
+				return answer.option === "movie-this";
+			},
+			type : "input",
+			name: "movieName",
+			message: "movie name: "
+		},
+		{
+			when: function(answer) {
+				return answer.option === "spotify-this-song";
+			},
+			type : "input",
+			name: "songName",
+			message: "song name: "
+		}
+		]).then((answer) => {
+			if (answer.option === "quit") process.quit();
+			else if (answer.option === "movie-this") {
+				if (answer.movieName.trim() === "") main(answer.option, undefined);
+				else main(answer.option, answer.movieName.trim());
+			}
+			else if (answer.option === "spotify-this-song") {
+				if (answer.songName.trim() === "") main(answer.option, undefined);
+				else main(answer.option, answer.songName);
+			}
+			else main(answer.option, undefined);
 	});
 	
 }

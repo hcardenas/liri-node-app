@@ -104,7 +104,7 @@ function tweet_func(arg) {
 	}
 
  
-	var params = {screen_name: 'helmut cardenas'};
+	var params = {screen_name: 'helmut cardenas', count: 20};
 	keys.twitterKeys.get('statuses/user_timeline', params, function(error, tweets, response) {
 	  if (!error) {
 	    //console.log(tweets);
@@ -134,8 +134,8 @@ function doWhatItSays_func(arg) {
 
 	var action = "";
 
+	for (var i= 0; i < fileArr.length ; ++i) {
 
-	for (var i in fileArr) {
 		action = fileArr[i].split(",");
 		if (action[0] !== "do-what-it-says")  // avoids infinite loop
 			main(action[0], action[1]);

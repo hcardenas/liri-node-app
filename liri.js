@@ -11,7 +11,6 @@ var request = require('request');
 var moment = require('moment');
 var fs = require('fs');
 var Twitter = require('twitter');
-var readline = require('readline');
 var inquirer = require('inquirer');
 
 
@@ -58,7 +57,7 @@ function loop() {
 			type: "list",
 			name: "option",
 			choices: ["my-tweets", "movie-this","spotify-this-song","do-what-it-says", "quit"],
-			message: ">pick one: "
+			message: ">> pick an action! "
 		}, 
 		{
 			when: function(answer) {
@@ -66,7 +65,7 @@ function loop() {
 			},
 			type : "input",
 			name: "movieName",
-			message: "movie name: "
+			message: "movie name (optional): "
 		},
 		{
 			when: function(answer) {
@@ -74,9 +73,10 @@ function loop() {
 			},
 			type : "input",
 			name: "songName",
-			message: "song name: "
+			message: "song name (optional): "
 		}
-		]).then((answer) => {
+	])
+	.then((answer) => {
 			if (answer.option === "quit") process.quit();
 			else if (answer.option === "movie-this") {
 				if (answer.movieName.trim() === "") main(answer.option, undefined);
@@ -87,7 +87,13 @@ function loop() {
 				else main(answer.option, answer.songName);
 			}
 			else main(answer.option, undefined);
-	});
+
+			
+	})
+	.catch((err) =>{
+			console.log("good bye")
+	})
+	;
 	
 }
 

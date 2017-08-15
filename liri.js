@@ -112,7 +112,8 @@ function tweet_func(arg) {
 	    var message = "";
 	    var num = 1;
 	    for (var i = 0; i < tweets.length ; ++i, ++num) {
-	    	message += `tweet ${num}: ${tweets[i].text}`;
+	    	//console.log(JSON.stringify(tweets, null, 2));
+	    	message += `tweet ${num}: ${tweets[i].text} - created ${(tweets[i].user.created_at).split("+")[0]}`;
 	    	if (i < tweets.length - 1) 
 	    		message += '\n';
 	    	

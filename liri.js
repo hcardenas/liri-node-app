@@ -138,7 +138,7 @@ function doWhatItSays_func(arg) {
 
 		action = fileArr[i].split(",");
 		if (action[0] !== "do-what-it-says")  // avoids infinite loop
-			main(action[0], action[1]);
+			main(action[0], action[1].trim());
 	}
 }
 
